@@ -15,21 +15,17 @@ const STORAGE_KEY = "outingRequests";
 ===================================================== */
 
 function getToday() {
-
   const now = new Date();
 
-  const year =
-    now.getFullYear();
+  const year = now.getFullYear();
 
-  const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(2, "0");
+  const month = String(
+    now.getMonth() + 1
+  ).padStart(2, "0");
 
-  const day =
-    String(
-      now.getDate()
-    ).padStart(2, "0");
+  const day = String(
+    now.getDate()
+  ).padStart(2, "0");
 
   return `${year}-${month}-${day}`;
 }
@@ -40,36 +36,29 @@ function getToday() {
 ===================================================== */
 
 function getCurrentDateTime() {
-
   const now = new Date();
 
-  const day =
-    String(
-      now.getDate()
-    ).padStart(2, "0");
+  const day = String(
+    now.getDate()
+  ).padStart(2, "0");
 
-  const month =
-    String(
-      now.getMonth() + 1
-    ).padStart(2, "0");
+  const month = String(
+    now.getMonth() + 1
+  ).padStart(2, "0");
 
-  const year =
-    now.getFullYear();
+  const year = now.getFullYear();
 
-  const hours =
-    String(
-      now.getHours()
-    ).padStart(2, "0");
+  const hours = String(
+    now.getHours()
+  ).padStart(2, "0");
 
-  const minutes =
-    String(
-      now.getMinutes()
-    ).padStart(2, "0");
+  const minutes = String(
+    now.getMinutes()
+  ).padStart(2, "0");
 
-  const seconds =
-    String(
-      now.getSeconds()
-    ).padStart(2, "0");
+  const seconds = String(
+    now.getSeconds()
+  ).padStart(2, "0");
 
   return `${day}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
 }
@@ -80,37 +69,23 @@ function getCurrentDateTime() {
 ===================================================== */
 
 function getRequests() {
-
-  const stored =
-    localStorage.getItem(
-      STORAGE_KEY
-    );
-
+  const stored = localStorage.getItem(STORAGE_KEY);
 
   if (!stored) {
-
-    const defaults =
-      getDefaultRequests();
+    const defaults = getDefaultRequests();
 
     saveRequests(defaults);
 
     return defaults;
-
   }
 
-
   try {
-
     return JSON.parse(stored);
-
   } catch (error) {
-
     console.error(error);
 
     return [];
-
   }
-
 }
 
 
@@ -119,12 +94,10 @@ function getRequests() {
 ===================================================== */
 
 function saveRequests(requests) {
-
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify(requests)
   );
-
 }
 
 
@@ -133,9 +106,7 @@ function saveRequests(requests) {
 ===================================================== */
 
 function getDefaultRequests() {
-
   return [
-
     {
       id: "old-1",
 
@@ -169,9 +140,7 @@ function getDefaultRequests() {
         "warden.sannasic.ktr",
 
       otp: null
-
     },
-
 
     {
       id: "old-2",
@@ -206,9 +175,7 @@ function getDefaultRequests() {
         "warden.sannasic.ktr",
 
       otp: null
-
     },
-
 
     {
       id: "old-3",
@@ -243,9 +210,7 @@ function getDefaultRequests() {
         "warden.sannasic.ktr",
 
       otp: null
-
     },
-
 
     {
       id: "old-4",
@@ -280,9 +245,7 @@ function getDefaultRequests() {
         "warden.sannasic.ktr",
 
       otp: null
-
     },
-
 
     {
       id: "old-5",
@@ -317,9 +280,7 @@ function getDefaultRequests() {
         "warden.sannasic.ktr",
 
       otp: null
-
     },
-
 
     {
       id: "old-6",
@@ -354,11 +315,8 @@ function getDefaultRequests() {
         "warden.sannasic.ktr",
 
       otp: null
-
     }
-
   ];
-
 }
 
 
@@ -367,14 +325,12 @@ function getDefaultRequests() {
 ===================================================== */
 
 function generateOTP() {
-
   return String(
     Math.floor(
       100000 +
       Math.random() * 900000
     )
   );
-
 }
 
 
@@ -383,11 +339,9 @@ function generateOTP() {
 ===================================================== */
 
 function renderPage() {
-
   renderOTP();
 
   renderHistory();
-
 }
 
 
@@ -396,25 +350,16 @@ function renderPage() {
 ===================================================== */
 
 function renderOTP() {
-
   const otpSection =
-    document.getElementById(
-      "otpSection"
-    );
-
+    document.getElementById("otpSection");
 
   if (!otpSection) {
     return;
   }
 
+  const today = getToday();
 
-  const today =
-    getToday();
-
-
-  const requests =
-    getRequests();
-
+  const requests = getRequests();
 
   const todayRequests =
     requests.filter(
@@ -423,16 +368,13 @@ function renderOTP() {
     );
 
 
-  /*
-     No outing today.
-  */
+  /* ---------------------------------------------
+     NO OUTING TODAY
+  --------------------------------------------- */
 
-  if (
-    todayRequests.length === 0
-  ) {
+  if (todayRequests.length === 0) {
 
     otpSection.innerHTML = `
-
       <div class="no-otp">
 
         <strong>
@@ -446,17 +388,15 @@ function renderOTP() {
         Arch Gate OTP.
 
       </div>
-
     `;
 
     return;
-
   }
 
 
-  /*
-     Latest today's outing.
-  */
+  /* ---------------------------------------------
+     GET LATEST TODAY'S OUTING
+  --------------------------------------------- */
 
   const request =
     todayRequests[
@@ -464,39 +404,44 @@ function renderOTP() {
     ];
 
 
-  /*
-     Generate OTP if necessary.
-  */
+  /* ---------------------------------------------
+     GENERATE OTP IF NEEDED
+  --------------------------------------------- */
 
   if (!request.otp) {
 
     request.otp =
       generateOTP();
 
-    saveRequests(
-      requests
-    );
-
+    saveRequests(requests);
   }
 
 
-  /*
-     Default status.
-  */
+  /* ---------------------------------------------
+     DEFAULT STATUS
+  --------------------------------------------- */
 
   const status =
     request.status ||
     "still_out";
 
 
-  /*
-     Default confirmer.
-  */
+  /* ---------------------------------------------
+     CONFIRMED BY
+     
+     IMPORTANT:
+     This is ONLY used in the OTP section.
+     It is NOT displayed in Past Outings.
+  --------------------------------------------- */
 
   const confirmedBy =
     request.confirmedBy ||
     "sarasu";
 
+
+  /* ---------------------------------------------
+     OTP HTML
+  --------------------------------------------- */
 
   otpSection.innerHTML = `
 
@@ -506,9 +451,7 @@ function renderOTP() {
         OTP for Arch Gate
       </h2>
 
-
       <div class="rule"></div>
-
 
       <p class="otp-dates">
 
@@ -522,13 +465,9 @@ function renderOTP() {
 
       </p>
 
-
       <div class="otp">
-
         ${request.otp}
-
       </div>
-
 
       <p class="otp-note">
 
@@ -538,7 +477,11 @@ function renderOTP() {
       </p>
 
 
-      <!-- STATUS BAR -->
+      <!-- =========================================
+           CURRENT OTP INFORMATION
+
+           Confirmed by is shown ONLY HERE.
+      ========================================== -->
 
       <div class="otp-info">
 
@@ -585,7 +528,6 @@ function renderOTP() {
     </section>
 
   `;
-
 }
 
 
@@ -600,23 +542,21 @@ function renderHistory() {
       "historyGrid"
     );
 
-
   if (!historyGrid) {
     return;
   }
 
 
-  const today =
-    getToday();
+  const today = getToday();
+
+  const requests = getRequests();
 
 
-  const requests =
-    getRequests();
-
-
-  /*
-     Only dates BEFORE today.
-  */
+  /* ---------------------------------------------
+     ONLY SHOW DATES BEFORE TODAY
+     
+     Today's outing stays in OTP.
+  --------------------------------------------- */
 
   const pastRequests =
     requests
@@ -632,57 +572,54 @@ function renderHistory() {
               a.outDate
             );
 
-
-          if (
-            dateCompare !== 0
-          ) {
-
+          if (dateCompare !== 0) {
             return dateCompare;
-
           }
-
 
           return b.outTime.localeCompare(
             a.outTime
           );
-
         }
       );
 
 
-  if (
-    pastRequests.length === 0
-  ) {
+  /* ---------------------------------------------
+     EMPTY HISTORY
+  --------------------------------------------- */
+
+  if (pastRequests.length === 0) {
 
     historyGrid.innerHTML = `
-
       <div class="empty-history">
 
         No past outings yet.
 
       </div>
-
     `;
 
     return;
-
   }
 
+
+  /* ---------------------------------------------
+     CREATE CARDS
+  --------------------------------------------- */
 
   historyGrid.innerHTML =
     pastRequests
       .map(
         request =>
-          createBookingHTML(
-            request
-          )
+          createBookingHTML(request)
       )
       .join("");
 
 
-  /*
-     Triple-click detection.
-  */
+  /* ---------------------------------------------
+     TRIPLE CLICK DELETE
+     
+     Delete button stays hidden until
+     the individual card is triple-clicked.
+  --------------------------------------------- */
 
   document
     .querySelectorAll(".booking")
@@ -699,25 +636,21 @@ function renderHistory() {
 
           /*
              Don't count clicks on
-             the Delete button itself.
+             Delete button itself.
           */
 
           if (
             event.target.classList
               .contains("remove-btn")
           ) {
-
             return;
-
           }
 
 
           clickCount++;
 
 
-          clearTimeout(
-            clickTimer
-          );
+          clearTimeout(clickTimer);
 
 
           clickTimer =
@@ -731,33 +664,28 @@ function renderHistory() {
             );
 
 
-          /*
-             Triple click!
-          */
+          /* ----------------------------------
+             TRIPLE CLICK
+          ---------------------------------- */
 
-          if (
-            clickCount === 3
-          ) {
+          if (clickCount === 3) {
 
             this.classList.add(
               "delete-unlocked"
             );
 
-
             clickCount = 0;
-
           }
 
         }
-
       );
 
     });
 
 
-  /*
-     Delete buttons.
-  */
+  /* ---------------------------------------------
+     DELETE BUTTONS
+  --------------------------------------------- */
 
   document
     .querySelectorAll(".remove-btn")
@@ -765,11 +693,12 @@ function renderHistory() {
 
       button.addEventListener(
         "click",
-        function() {
+        function(event) {
+
+          event.stopPropagation();
 
           const id =
             this.dataset.id;
-
 
           removeRequest(id);
 
@@ -777,7 +706,6 @@ function renderHistory() {
       );
 
     });
-
 }
 
 
@@ -785,18 +713,20 @@ function renderHistory() {
    BOOKING HTML
 ===================================================== */
 
-function createBookingHTML(
-  request
-) {
+function createBookingHTML(request) {
 
   const status =
     request.status ||
     "confirmed";
 
 
-  const confirmedBy =
-    request.confirmedBy ||
-    "sarasu";
+  /*
+     IMPORTANT:
+
+     confirmedBy is deliberately NOT used here.
+
+     It should NOT appear in Past Outings.
+  */
 
 
   return `
@@ -811,9 +741,10 @@ function createBookingHTML(
           Booking Details
         </h3>
 
-
         <span>
-          ${status.toUpperCase()}
+          ${escapeHTML(
+            status.toUpperCase()
+          )}
         </span>
 
       </div>
@@ -825,7 +756,9 @@ function createBookingHTML(
           Out Date:
         </b>
 
-        ${request.outDate}
+        ${escapeHTML(
+          request.outDate
+        )}
 
       </p>
 
@@ -836,7 +769,9 @@ function createBookingHTML(
           Out Time:
         </b>
 
-        ${request.outTime}
+        ${escapeHTML(
+          request.outTime
+        )}
 
       </p>
 
@@ -847,7 +782,9 @@ function createBookingHTML(
           In Date:
         </b>
 
-        ${request.inDate}
+        ${escapeHTML(
+          request.inDate
+        )}
 
       </p>
 
@@ -858,7 +795,9 @@ function createBookingHTML(
           In Time:
         </b>
 
-        ${request.inTime}
+        ${escapeHTML(
+          request.inTime
+        )}
 
       </p>
 
@@ -882,28 +821,28 @@ function createBookingHTML(
           Status:
         </b>
 
-        ${escapeHTML(status)}
+        ${escapeHTML(
+          status
+        )}
 
       </p>
 
 
+      <!-- =========================================
+           HISTORY HANDLED INFORMATION
+
+           NO "Confirmed by: sarasu" HERE.
+      ========================================== -->
+
       <div class="handled">
-
-        <b>
-          Confirmed by:
-        </b>
-
-        ${escapeHTML(
-          confirmedBy
-        )}
-
-        <br />
 
         <b>
           Handled on:
         </b>
 
-        ${request.handledOn}
+        ${escapeHTML(
+          request.handledOn || ""
+        )}
 
         <br />
 
@@ -911,16 +850,26 @@ function createBookingHTML(
           Handled by:
         </b>
 
-        ${request.handledBy}
+        ${escapeHTML(
+          request.handledBy ||
+          "warden.sannasic.ktr"
+        )}
 
       </div>
 
 
-      <!-- HIDDEN UNTIL TRIPLE CLICK -->
+      <!-- =========================================
+           HIDDEN DELETE BUTTON
+           
+           CSS makes this visible after
+           triple-clicking the card.
+      ========================================== -->
 
       <button
         class="remove-btn"
-        data-id="${request.id}"
+        data-id="${escapeHTML(
+          request.id
+        )}"
         type="button"
       >
 
@@ -931,7 +880,6 @@ function createBookingHTML(
     </article>
 
   `;
-
 }
 
 
@@ -939,84 +887,70 @@ function createBookingHTML(
    SUBMIT REQUEST
 ===================================================== */
 
-function submitRequest(
-  event
-) {
+function submitRequest(event) {
 
   event.preventDefault();
 
 
+  /* ---------------------------------------------
+     GET FORM VALUES
+  --------------------------------------------- */
+
   const room =
     document
-      .getElementById(
-        "roomNumber"
-      )
+      .getElementById("roomNumber")
       .value
       .trim();
 
 
   const outDate =
     document
-      .getElementById(
-        "outDate"
-      )
+      .getElementById("outDate")
       .value;
 
 
   const outTime =
     document
-      .getElementById(
-        "outTime"
-      )
+      .getElementById("outTime")
       .value;
 
 
   const inDate =
     document
-      .getElementById(
-        "inDate"
-      )
+      .getElementById("inDate")
       .value;
 
 
   const inTime =
     document
-      .getElementById(
-        "inTime"
-      )
+      .getElementById("inTime")
       .value;
 
 
   const reason =
     document
-      .getElementById(
-        "reason"
-      )
+      .getElementById("reason")
       .value
       .trim();
 
 
   const parentEmail =
     document
-      .getElementById(
-        "parentEmail"
-      )
+      .getElementById("parentEmail")
       .value
       .trim();
 
 
   const parentPhone =
     document
-      .getElementById(
-        "parentPhone"
-      )
+      .getElementById("parentPhone")
       .value
       .trim();
 
 
-  /*
-     Validation
-  */
+  /* ---------------------------------------------
+     VALIDATION
+  --------------------------------------------- */
 
   if (
     !room ||
@@ -1032,13 +966,12 @@ function submitRequest(
     );
 
     return;
-
   }
 
 
-  /*
-     Check dates.
-  */
+  /* ---------------------------------------------
+     CHECK DATE/TIME
+  --------------------------------------------- */
 
   const outDateTime =
     new Date(
@@ -1052,31 +985,27 @@ function submitRequest(
     );
 
 
-  if (
-    inDateTime <
-    outDateTime
-  ) {
+  if (inDateTime < outDateTime) {
 
     alert(
       "In Date/Time cannot be before Out Date/Time."
     );
 
     return;
-
   }
 
 
-  /*
-     Today?
-  */
+  /* ---------------------------------------------
+     CHECK IF OUT DATE IS TODAY
+  --------------------------------------------- */
 
   const isToday =
     outDate === getToday();
 
 
-  /*
-     New request.
-  */
+  /* ---------------------------------------------
+     CREATE REQUEST
+  --------------------------------------------- */
 
   const newRequest = {
 
@@ -1099,9 +1028,13 @@ function submitRequest(
 
     parentPhone,
 
+
     /*
-       Today = still_out
-       Old = confirmed
+       Today's request:
+       still_out
+
+       Older request:
+       confirmed
     */
 
     status:
@@ -1109,14 +1042,30 @@ function submitRequest(
         ? "still_out"
         : "confirmed",
 
+
+    /*
+       This is kept in the data because
+       the OTP section uses it.
+
+       It is NOT displayed in history.
+    */
+
     confirmedBy:
       "sarasu",
+
 
     handledOn:
       getCurrentDateTime(),
 
+
     handledBy:
       "warden.sannasic.ktr",
+
+
+    /*
+       Generate OTP immediately
+       if outing is today.
+    */
 
     otp:
       isToday
@@ -1125,6 +1074,10 @@ function submitRequest(
 
   };
 
+
+  /* ---------------------------------------------
+     SAVE
+  --------------------------------------------- */
 
   const requests =
     getRequests();
@@ -1140,27 +1093,30 @@ function submitRequest(
   );
 
 
-  /*
-     Reset form.
-  */
+  /* ---------------------------------------------
+     RESET FORM
+  --------------------------------------------- */
 
-  document
-    .getElementById(
+  const form =
+    document.getElementById(
       "outingForm"
-    )
-    .reset();
+    );
+
+  if (form) {
+    form.reset();
+  }
 
 
-  /*
-     Refresh page content.
-  */
+  /* ---------------------------------------------
+     REFRESH
+  --------------------------------------------- */
 
   renderPage();
 
 
-  /*
-     Message.
-  */
+  /* ---------------------------------------------
+     SUCCESS MESSAGE
+  --------------------------------------------- */
 
   if (isToday) {
 
@@ -1191,9 +1147,7 @@ function submitRequest(
    DELETE REQUEST
 ===================================================== */
 
-function removeRequest(
-  id
-) {
+function removeRequest(id) {
 
   const confirmed =
     confirm(
@@ -1223,7 +1177,6 @@ function removeRequest(
 
 
   renderPage();
-
 }
 
 
@@ -1257,9 +1210,7 @@ function fakeLogout() {
    ESCAPE HTML
 ===================================================== */
 
-function escapeHTML(
-  value
-) {
+function escapeHTML(value) {
 
   return String(value)
 
@@ -1295,14 +1246,20 @@ function escapeHTML(
    FORM SUBMIT
 ===================================================== */
 
-document
-  .getElementById(
+const outingForm =
+  document.getElementById(
     "outingForm"
-  )
-  .addEventListener(
+  );
+
+
+if (outingForm) {
+
+  outingForm.addEventListener(
     "submit",
     submitRequest
   );
+
+}
 
 
 /* =====================================================
