@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Request Outing</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <header class="topbar">
+
+    <div class="brand">
+      <img
+        src="assets/logo.png"
+        alt="SRM logo"
+        class="logo"
+      />
+
+      <span>REQUEST OUTING</span>
+    </div>
+
+    <div class="page-title">
+      Request Outing
+    </div>
+
+    <div class="account">
+      <span>pc0369@srmist.edu.in</span>
+
+      <button
+        class="logout"
+        type="button"
+        onclick="fakeLogout()"
+      >
+        Logout
+      </button>
+    </div>
+
+  </header>
+
+
+  <main class="page">
+
+    <!-- PAGE HEADING -->
+    <section class="heading">
+
+      <h1>Request Outing</h1>
+
+      <div class="rule"></div>
+
+    </section>
+
+
+    <!-- REQUEST FORM -->
+    <section class="card form-card">
+
+      <form onsubmit="return submitFakeRequest(event)">
+
+        <label>Full Name:</label>
+
+        <input
+          class="readonly"
+          value="PRAGYA CHAUDHARY (RA2311003010366)"
+          readonly
+        />
+
+
+        <label>Email (SRM):</label>
+
+        <input
+          class="readonly"
+          value="pc0369@srmist.edu.in"
+          readonly
+        />
+
+
+        <label>Room Number:</label>
+
+        <input
+          required
+          placeholder="Enter your room number"
+        />
+
+
+        <label>Hostel Name:</label>
+
+        <input
+          class="readonly"
+          value="Sannasi C"
+          readonly
+        />
+
+
+        <div class="two-col">
+
+          <div>
+
+            <label>Out Date:</label>
+
+            <input
+              required
+              type="date"
+            />
+
+          </div>
+
+
+          <div>
+
+            <label>Out Time:</label>
+
+            <input
+              required
+              type="time"
+            />
+
+          </div>
+
+        </div>
+
+
+        <div class="two-col">
+
+          <div>
+
+            <label>In Date:</label>
+
+            <input
+              required
+              type="date"
+            />
+
+          </div>
+
+
+          <div>
+
+            <label>In Time:</label>
+
+            <input
+              required
+              type="time"
+            />
+
+          </div>
+
+        </div>
+
+
+        <label>Reason for Outing:</label>
+
+        <input
+          required
+          placeholder="Enter reason for outing"
+        />
+
+
+        <label>Parent Email:</label>
+
+        <input
+          type="email"
+          placeholder="Enter parent email"
+        />
+
+
+        <label>Parent Phone:</label>
+
+        <input
+          type="tel"
+          placeholder="Enter parent phone"
+        />
+
+
+        <button
+          class="send"
+          type="submit"
+        >
+          Send Request
+        </button>
+
+      </form>
+
+    </section>
+
+
+    <!-- OTP -->
+    <div class="otp-wrap">
+
+      <section class="otp-card">
+
+        <h2>OTP for Arch Gate</h2>
+
+        <div class="rule"></div>
+
+        <p class="otp-dates">
+          Out Date: 2026-09-05 | In Date: 2026-09-05
+        </p>
+
+        <div class="otp">
+          228506
+        </div>
+
+        <p class="otp-note">
+          Please present this OTP at the Arch Gate when returning to SRM.
+        </p>
+
+      </section>
+
+    </div>
+
+
+    <!-- PAST OUTINGS -->
+    <section class="history">
+
+      <h2>Past Outings</h2>
+
+      <div class="rule"></div>
+
+
+      <div class="history-grid">
+
+
+        <!-- BOOKING 1 -->
+        <article class="booking">
+
+          <div class="booking-top">
+            <h3>Booking Details</h3>
+            <span>CONFIRMED</span>
+          </div>
+
+          <p><b>Out Date:</b> 2026-09-04</p>
+          <p><b>Out Time:</b> 11:48</p>
+          <p><b>In Date:</b> 2026-09-04</p>
+          <p><b>In Time:</b> 15:00</p>
+          <p><b>Reason:</b> Hospital</p>
+          <p><b>Status:</b> confirmed</p>
+
+          <div class="handled">
+            <b>Handled on:</b>
+            04/09/2026, 15:06:03
+            <br />
+            <b>Handled by:</b>
+            warden.sannasic.ktr
+          </div>
+
+        </article>
+
+
+        <!-- BOOKING 2 -->
+        <article class="booking">
+
+          <div class="booking-top">
+            <h3>Booking Details</h3>
+            <span>CONFIRMED</span>
+          </div>
+
+          <p><b>Out Date:</b> 2026-08-30</p>
+          <p><b>Out Time:</b> 17:25</p>
+          <p><b>In Date:</b> 2026-08-30</p>
+          <p><b>In Time:</b> 18:30</p>
+          <p><b>Reason:</b> Food delivery</p>
+          <p><b>Status:</b> confirmed</p>
+
+          <div class="handled">
+            <b>Handled on:</b>
+            30/08/2026, 19:02:33
+            <br />
+            <b>Handled by:</b>
+            warden.sannasic.ktr
+          </div>
+
+        </article>
+
+
+        <!-- BOOKING 3 -->
+        <article class="booking">
+
+          <div class="booking-top">
+            <h3>Booking Details</h3>
+            <span>CONFIRMED</span>
+          </div>
+
+          <p><b>Out Date:</b> 2026-08-29</p>
+          <p><b>Out Time:</b> 17:50</p>
+          <p><b>In Date:</b> 2026-08-29</p>
+          <p><b>In Time:</b> 18:35</p>
+          <p><b>Reason:</b> Food delivery</p>
+          <p><b>Status:</b> confirmed</p>
+
+          <div class="handled">
+            <b>Handled on:</b>
+            29/08/2026, 19:05:24
+            <br />
+            <b>Handled by:</b>
+            warden.sannasic.ktr
+          </div>
+
+        </article>
+
+
+        <!-- BOOKING 4 -->
+        <article class="booking">
+
+          <div class="booking-top">
+            <h3>Booking Details</h3>
+            <span>CONFIRMED</span>
+          </div>
+
+          <p><b>Out Date:</b> 2026-08-26</p>
+          <p><b>Out Time:</b> 10:35</p>
+          <p><b>In Date:</b> 2026-08-26</p>
+          <p><b>In Time:</b> 17:30</p>
+          <p><b>Reason:</b> Incampus</p>
+          <p><b>Status:</b> confirmed</p>
+
+          <div class="handled">
+            <b>Handled on:</b>
+            26/08/2026, 18:53:11
+            <br />
+            <b>Handled by:</b>
+            warden.sannasic.ktr
+          </div>
+
+        </article>
+
+
+        <!-- BOOKING 5 -->
+        <article class="booking">
+
+          <div class="booking-top">
+            <h3>Booking Details</h3>
+            <span>CONFIRMED</span>
+          </div>
+
+          <p><b>Out Date:</b> 2026-08-24</p>
+          <p><b>Out Time:</b> 17:30</p>
+          <p><b>In Date:</b> 2026-08-24</p>
+          <p><b>In Time:</b> 18:30</p>
+          <p><b>Reason:</b> Food delivery</p>
+          <p><b>Status:</b> confirmed</p>
+
+          <div class="handled">
+            <b>Handled on:</b>
+            24/08/2026, 18:51:36
+            <br />
+            <b>Handled by:</b>
+            warden.sannasic.ktr
+          </div>
+
+        </article>
+
+
+        <!-- BOOKING 6 -->
+        <article class="booking">
+
+          <div class="booking-top">
+            <h3>Booking Details</h3>
+            <span>CONFIRMED</span>
+          </div>
+
+          <p><b>Out Date:</b> 2026-08-15</p>
+          <p><b>Out Time:</b> 17:15</p>
+          <p><b>In Date:</b> 2026-08-15</p>
+          <p><b>In Time:</b> 18:10</p>
+          <p><b>Reason:</b> Food delivery</p>
+          <p><b>Status:</b> confirmed</p>
+
+          <div class="handled">
+            <b>Handled on:</b>
+            15/08/2026, 19:00:00
+            <br />
+            <b>Handled by:</b>
+            warden.sannasic.ktr
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- DARK MODE -->
+  <button
+    class="theme"
+    onclick="document.body.classList.toggle('dark')"
+    aria-label="Toggle dark mode"
+  >
+    ◐
+  </button>
+
+
+  <script src="script.js"></script>
+
+</body>
+</html>

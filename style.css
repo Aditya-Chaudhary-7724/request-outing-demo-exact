@@ -1,0 +1,417 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #273244;
+  background: #f3f3f3;
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.topbar {
+  height: 76px;
+  background: #073b70;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 25px;
+  font-weight: 800;
+  width: 34%;
+}
+
+/* FIXED SRM LOGO */
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.page-title {
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  flex: 1;
+}
+
+.account {
+  width: 34%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 22px;
+  font-size: 15px;
+}
+
+.logout {
+  background: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+  border-radius: 5px;
+  padding: 9px 17px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.logout:hover {
+  background: #fff;
+  color: #073b70;
+}
+
+/* =========================
+   PAGE
+========================= */
+
+.page {
+  max-width: 1260px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #fff;
+  padding: 70px 46px 70px;
+}
+
+.heading {
+  text-align: center;
+}
+
+.heading h1 {
+  font-size: 31px;
+  margin: 12px 0 12px;
+  color: #273244;
+}
+
+.rule {
+  height: 3px;
+  background: #073b70;
+  margin: 0 0 26px;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.form-card {
+  width: 685px;
+  max-width: 100%;
+  margin: 0 auto;
+  border: 1px solid #e0e4e8;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+  background: #fff;
+  padding: 31px;
+}
+
+.form-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-card label {
+  font-weight: 700;
+  margin: 0 0 10px;
+  font-size: 16px;
+  color: #374151;
+}
+
+.form-card input {
+  height: 46px;
+  border: 1px solid #d7dce2;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 15px;
+  margin-bottom: 22px;
+  color: #566171;
+  background: #fff;
+}
+
+.form-card input:focus {
+  outline: 2px solid #2378d7;
+  outline-offset: -1px;
+}
+
+.form-card .readonly {
+  background: #f7f8fa;
+  color: #687384;
+}
+
+.form-card input:required:invalid:not(:focus) {
+  background: #fff6f6;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+.send {
+  height: 46px;
+  border: 0;
+  border-radius: 8px;
+  background: #adb3b9;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 3px;
+}
+
+.send:hover {
+  background: #073b70;
+}
+
+/* =========================
+   OTP
+========================= */
+
+.otp-wrap {
+  width: 685px;
+  max-width: 100%;
+  margin: 32px auto 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.otp-card {
+  width: 590px;
+  max-width: 100%;
+  background: #fbfdea;
+  border: 1px solid #cad51a;
+  border-radius: 14px;
+  padding: 28px;
+  text-align: right;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.otp-card h2 {
+  font-size: 29px;
+  margin: 0 0 15px;
+  color: #273244;
+}
+
+.otp-card .rule {
+  margin-bottom: 22px;
+}
+
+.otp-dates {
+  font-size: 17px;
+  font-weight: 700;
+  color: #505050;
+}
+
+.otp {
+  font-size: 26px;
+  font-weight: 800;
+  color: #2f6e25;
+  letter-spacing: 2px;
+  margin: 16px 0;
+}
+
+.otp-note {
+  font-size: 16px;
+  color: #888;
+  margin: 0;
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+.history {
+  margin-top: 46px;
+}
+
+.history h2 {
+  font-size: 29px;
+  margin: 0 0 14px;
+  color: #273244;
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.booking {
+  border: 2px solid #45b94d;
+  border-radius: 14px;
+  padding: 22px;
+  background: #fff;
+}
+
+.booking-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.booking h3 {
+  font-size: 19px;
+  margin: 0;
+  color: #555;
+}
+
+.booking-top span {
+  background: #c9eacb;
+  color: #236a29;
+  padding: 7px 13px;
+  border-radius: 7px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.booking p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #4b4b4b;
+}
+
+.handled {
+  background: #f6f7f8;
+  border: 1px solid #d8dde2;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 15px;
+  line-height: 1.6;
+  color: #555;
+}
+
+/* =========================
+   DARK MODE
+========================= */
+
+.theme {
+  position: fixed;
+  right: 24px;
+  bottom: 18px;
+  width: 58px;
+  height: 58px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 3px 14px rgba(0, 0, 0, 0.15);
+  font-size: 25px;
+  color: #073b70;
+  cursor: pointer;
+}
+
+.dark {
+  background: #111827;
+  color: #e5e7eb;
+}
+
+.dark .page,
+.dark .form-card,
+.dark .booking {
+  background: #18212f;
+  color: #e5e7eb;
+}
+
+.dark .form-card input {
+  background: #202b3a;
+  color: #e5e7eb;
+  border-color: #3b4655;
+}
+
+.dark .otp-card {
+  background: #30330e;
+}
+
+.dark .history h2,
+.dark .heading h1,
+.dark .otp-card h2 {
+  color: #fff;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 900px) {
+  .brand {
+    width: auto;
+  }
+
+  .page-title {
+    display: none;
+  }
+
+  .account {
+    margin-left: auto;
+    width: auto;
+  }
+
+  .account span {
+    display: none;
+  }
+
+  .history-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 620px) {
+  .topbar {
+    padding: 0 15px;
+  }
+
+  .brand {
+    font-size: 17px;
+    gap: 9px;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+  }
+
+  .page {
+    padding: 35px 16px 50px;
+  }
+
+  .form-card {
+    padding: 20px;
+  }
+
+  .history-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .otp-wrap {
+    margin-top: 24px;
+  }
+
+  .otp-card {
+    text-align: center;
+  }
+}
