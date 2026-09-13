@@ -11,7 +11,7 @@ const STORAGE_KEY = "outingRequests";
 
 
 /* =====================================================
-   TODAY
+   GET TODAY
 ===================================================== */
 
 function getToday() {
@@ -69,20 +69,41 @@ function getCurrentDateTime() {
 ===================================================== */
 
 function getRequests() {
-  const stored = localStorage.getItem(STORAGE_KEY);
+
+  const stored =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
+
+  /*
+     First time opening the website
+  */
 
   if (!stored) {
-    const defaults = getDefaultRequests();
+
+    const defaults =
+      getDefaultRequests();
 
     saveRequests(defaults);
 
     return defaults;
   }
 
+
+  /*
+     Read saved requests
+  */
+
   try {
+
     return JSON.parse(stored);
+
   } catch (error) {
-    console.error(error);
+
+    console.error(
+      "Error reading outing requests:",
+      error
+    );
 
     return [];
   }
@@ -94,6 +115,7 @@ function getRequests() {
 ===================================================== */
 
 function saveRequests(requests) {
+
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify(requests)
@@ -102,11 +124,13 @@ function saveRequests(requests) {
 
 
 /* =====================================================
-   DEFAULT HISTORY
+   DEFAULT PAST OUTINGS
 ===================================================== */
 
 function getDefaultRequests() {
+
   return [
+
     {
       id: "old-1",
 
@@ -130,8 +154,7 @@ function getDefaultRequests() {
 
       status: "confirmed",
 
-      confirmedBy:
-        "sarasu",
+      confirmedBy: "sarasu",
 
       handledOn:
         "04/09/2026, 15:06:03",
@@ -141,6 +164,7 @@ function getDefaultRequests() {
 
       otp: null
     },
+
 
     {
       id: "old-2",
@@ -165,8 +189,7 @@ function getDefaultRequests() {
 
       status: "confirmed",
 
-      confirmedBy:
-        "sarasu",
+      confirmedBy: "sarasu",
 
       handledOn:
         "30/08/2026, 19:02:33",
@@ -176,6 +199,7 @@ function getDefaultRequests() {
 
       otp: null
     },
+
 
     {
       id: "old-3",
@@ -200,8 +224,7 @@ function getDefaultRequests() {
 
       status: "confirmed",
 
-      confirmedBy:
-        "sarasu",
+      confirmedBy: "sarasu",
 
       handledOn:
         "29/08/2026, 19:05:24",
@@ -211,6 +234,7 @@ function getDefaultRequests() {
 
       otp: null
     },
+
 
     {
       id: "old-4",
@@ -235,8 +259,7 @@ function getDefaultRequests() {
 
       status: "confirmed",
 
-      confirmedBy:
-        "sarasu",
+      confirmedBy: "sarasu",
 
       handledOn:
         "26/08/2026, 18:53:11",
@@ -246,6 +269,7 @@ function getDefaultRequests() {
 
       otp: null
     },
+
 
     {
       id: "old-5",
@@ -270,8 +294,7 @@ function getDefaultRequests() {
 
       status: "confirmed",
 
-      confirmedBy:
-        "sarasu",
+      confirmedBy: "sarasu",
 
       handledOn:
         "24/08/2026, 18:51:36",
@@ -281,6 +304,7 @@ function getDefaultRequests() {
 
       otp: null
     },
+
 
     {
       id: "old-6",
@@ -305,8 +329,7 @@ function getDefaultRequests() {
 
       status: "confirmed",
 
-      confirmedBy:
-        "sarasu",
+      confirmedBy: "sarasu",
 
       handledOn:
         "15/08/2026, 19:00:00",
@@ -316,15 +339,17 @@ function getDefaultRequests() {
 
       otp: null
     }
+
   ];
 }
 
 
 /* =====================================================
-   OTP
+   GENERATE OTP
 ===================================================== */
 
 function generateOTP() {
+
   return String(
     Math.floor(
       100000 +
@@ -339,6 +364,7 @@ function generateOTP() {
 ===================================================== */
 
 function renderPage() {
+
   renderOTP();
 
   renderHistory();
@@ -346,20 +372,33 @@ function renderPage() {
 
 
 /* =====================================================
-   RENDER OTP
+   CURRENT REQUEST + OTP
 ===================================================== */
 
 function renderOTP() {
+
   const otpSection =
-    document.getElementById("otpSection");
+    document.getElementById(
+      "otpSection"
+    );
+
 
   if (!otpSection) {
     return;
   }
 
-  const today = getToday();
 
-  const requests = getRequests();
+  const today =
+    getToday();
+
+
+  const requests =
+    getRequests();
+
+
+  /*
+     Find today's requests
+  */
 
   const todayRequests =
     requests.filter(
@@ -368,13 +407,16 @@ function renderOTP() {
     );
 
 
-  /* ---------------------------------------------
-     NO OUTING TODAY
-  --------------------------------------------- */
+  /* =================================================
+     NO CURRENT REQUEST
+  ================================================= */
 
-  if (todayRequests.length === 0) {
+  if (
+    todayRequests.length === 0
+  ) {
 
     otpSection.innerHTML = `
+
       <div class="no-otp">
 
         <strong>
@@ -384,19 +426,20 @@ function renderOTP() {
         <br><br>
 
         Submit an outing request with
-        today's date to generate an
-        Arch Gate OTP.
+        today's date to create a
+        Current Request.
 
       </div>
+
     `;
 
     return;
   }
 
 
-  /* ---------------------------------------------
-     GET LATEST TODAY'S OUTING
-  --------------------------------------------- */
+  /* =================================================
+     GET LATEST TODAY'S REQUEST
+  ================================================= */
 
   const request =
     todayRequests[
@@ -404,135 +447,421 @@ function renderOTP() {
     ];
 
 
-  /* ---------------------------------------------
-     GENERATE OTP IF NEEDED
-  --------------------------------------------- */
-
-  if (!request.otp) {
-
-    request.otp =
-      generateOTP();
-
-    saveRequests(requests);
-  }
-
-
-  /* ---------------------------------------------
+  /* =================================================
      DEFAULT STATUS
-  --------------------------------------------- */
+  ================================================= */
 
   const status =
     request.status ||
     "still_out";
 
 
-  /* ---------------------------------------------
+  /* =================================================
      CONFIRMED BY
      
-     IMPORTANT:
-     This is ONLY used in the OTP section.
-     It is NOT displayed in Past Outings.
-  --------------------------------------------- */
+     THIS IS USED ONLY IN OTP CARD
+  ================================================= */
 
   const confirmedBy =
     request.confirmedBy ||
     "sarasu";
 
 
-  /* ---------------------------------------------
-     OTP HTML
-  --------------------------------------------- */
+  /* =================================================
+     CURRENT REQUEST CARD
+  ================================================= */
 
-  otpSection.innerHTML = `
+  let currentRequestHTML = `
 
-    <section class="otp-card">
+    <section class="current-request-card">
 
-      <h2>
-        OTP for Arch Gate
-      </h2>
 
-      <div class="rule"></div>
+      <!-- HEADER -->
 
-      <p class="otp-dates">
+      <div class="current-request-header">
 
-        Out Date:
-        ${request.outDate}
+        <h2>
+          Current Request
+        </h2>
 
-        &nbsp;|&nbsp;
 
-        In Date:
-        ${request.inDate}
+        <span class="current-status">
 
-      </p>
+          ${escapeHTML(
+            status.toUpperCase()
+          )}
 
-      <div class="otp">
-        ${request.otp}
+        </span>
+
       </div>
 
-      <p class="otp-note">
 
-        Please present this OTP at the
-        Arch Gate when returning to SRM.
+      <!-- DETAILS -->
 
-      </p>
+      <div class="current-request-details">
 
 
-      <!-- =========================================
-           CURRENT OTP INFORMATION
+        <p>
 
-           Confirmed by is shown ONLY HERE.
-      ========================================== -->
+          <strong>
+            Out Date:
+          </strong>
 
-      <div class="otp-info">
+          ${escapeHTML(
+            request.outDate
+          )}
 
-        <div class="otp-info-row">
+        </p>
+
+
+        <p>
+
+          <strong>
+            Out Time:
+          </strong>
+
+          ${escapeHTML(
+            request.outTime
+          )}
+
+        </p>
+
+
+        <p>
+
+          <strong>
+            In Date:
+          </strong>
+
+          ${escapeHTML(
+            request.inDate
+          )}
+
+        </p>
+
+
+        <p>
+
+          <strong>
+            In Time:
+          </strong>
+
+          ${escapeHTML(
+            request.inTime
+          )}
+
+        </p>
+
+
+        <p>
 
           <strong>
             Reason:
           </strong>
 
-          <span>
-            ${escapeHTML(request.reason)}
-          </span>
+          ${escapeHTML(
+            request.reason
+          )}
 
-        </div>
+        </p>
 
 
-        <div class="otp-info-row">
+        <p>
 
           <strong>
             Status:
           </strong>
 
-          <span>
-            ${escapeHTML(status)}
-          </span>
+          ${escapeHTML(
+            status
+          )}
 
-        </div>
+        </p>
 
-
-        <div class="otp-info-row">
-
-          <strong>
-            Confirmed by:
-          </strong>
-
-          <span>
-            ${escapeHTML(confirmedBy)}
-          </span>
-
-        </div>
 
       </div>
+
+
+      <!-- HANDLED INFORMATION -->
+
+      <div class="current-handled">
+
+
+        <p>
+
+          <strong>
+            Handled on:
+          </strong>
+
+          ${escapeHTML(
+            request.handledOn || ""
+          )}
+
+        </p>
+
+
+        <p>
+
+          <strong>
+            Handled by:
+          </strong>
+
+          ${escapeHTML(
+            request.handledBy ||
+            "Sarasu supervisor"
+          )}
+
+        </p>
+
+
+      </div>
+
+  `;
+
+
+  /* =================================================
+     GENERATE OTP BUTTON
+
+     Show ONLY if OTP doesn't exist.
+  ================================================= */
+
+  if (!request.otp) {
+
+    currentRequestHTML += `
+
+      <button
+        type="button"
+        class="generate-otp-btn"
+        onclick="generateCurrentOTP('${escapeHTML(request.id)}')"
+      >
+
+        Generate OTP
+
+      </button>
+
+    `;
+  }
+
+
+  currentRequestHTML += `
 
     </section>
 
   `;
+
+
+  /* =================================================
+     OTP CARD
+
+     Show ONLY after OTP is generated.
+  ================================================= */
+
+  let otpHTML = "";
+
+
+  if (request.otp) {
+
+    otpHTML = `
+
+      <section class="otp-card">
+
+
+        <h2>
+          OTP for Arch Gate
+        </h2>
+
+
+        <div class="rule"></div>
+
+
+        <p class="otp-dates">
+
+          Out Date:
+          ${escapeHTML(
+            request.outDate
+          )}
+
+          &nbsp;|&nbsp;
+
+          In Date:
+          ${escapeHTML(
+            request.inDate
+          )}
+
+        </p>
+
+
+        <div class="otp">
+
+          ${escapeHTML(
+            request.otp
+          )}
+
+        </div>
+
+
+        <p class="otp-note">
+
+          Please present this OTP at the
+          Arch Gate when returning to SRM.
+
+        </p>
+
+
+        <!-- OTP INFORMATION -->
+
+        <div class="otp-info">
+
+
+          <div class="otp-info-row">
+
+            <strong>
+              Reason:
+            </strong>
+
+            <span>
+
+              ${escapeHTML(
+                request.reason
+              )}
+
+            </span>
+
+          </div>
+
+
+          <div class="otp-info-row">
+
+            <strong>
+              Status:
+            </strong>
+
+            <span>
+
+              ${escapeHTML(
+                status
+              )}
+
+            </span>
+
+          </div>
+
+
+          <!-- CONFIRMED BY ONLY HERE -->
+
+          <div class="otp-info-row">
+
+            <strong>
+              Confirmed by:
+            </strong>
+
+            <span>
+
+              ${escapeHTML(
+                confirmedBy
+              )}
+
+            </span>
+
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+    `;
+  }
+
+
+  /* =================================================
+     DISPLAY CURRENT REQUEST FIRST
+     THEN OTP
+  ================================================= */
+
+  otpSection.innerHTML =
+    currentRequestHTML +
+    otpHTML;
 }
 
 
 /* =====================================================
-   RENDER HISTORY
+   GENERATE CURRENT OTP
+===================================================== */
+
+function generateCurrentOTP(id) {
+
+  const requests =
+    getRequests();
+
+
+  const request =
+    requests.find(
+      item =>
+        item.id === id
+    );
+
+
+  if (!request) {
+
+    alert(
+      "Request not found."
+    );
+
+    return;
+  }
+
+
+  /* Already has OTP */
+
+  if (request.otp) {
+    return;
+  }
+
+
+  /* Generate */
+
+  request.otp =
+    generateOTP();
+
+
+  /* Keep status */
+
+  request.status =
+    request.status ||
+    "still_out";
+
+
+  /* Keep confirmer */
+
+  request.confirmedBy =
+    request.confirmedBy ||
+    "sarasu";
+
+
+  /* Save */
+
+  saveRequests(
+    requests
+  );
+
+
+  /* Refresh page */
+
+  renderPage();
+
+
+  /* Confirmation */
+
+  alert(
+    "OTP generated successfully."
+  );
+}
+
+
+/* =====================================================
+   RENDER PAST OUTINGS
 ===================================================== */
 
 function renderHistory() {
@@ -542,21 +871,25 @@ function renderHistory() {
       "historyGrid"
     );
 
+
   if (!historyGrid) {
     return;
   }
 
 
-  const today = getToday();
+  const today =
+    getToday();
 
-  const requests = getRequests();
+
+  const requests =
+    getRequests();
 
 
-  /* ---------------------------------------------
-     ONLY SHOW DATES BEFORE TODAY
-     
-     Today's outing stays in OTP.
-  --------------------------------------------- */
+  /* =================================================
+     ONLY OLD DATES
+
+     Today's request is NOT history.
+  ================================================= */
 
   const pastRequests =
     requests
@@ -572,9 +905,14 @@ function renderHistory() {
               a.outDate
             );
 
-          if (dateCompare !== 0) {
+
+          if (
+            dateCompare !== 0
+          ) {
+
             return dateCompare;
           }
+
 
           return b.outTime.localeCompare(
             a.outTime
@@ -583,43 +921,46 @@ function renderHistory() {
       );
 
 
-  /* ---------------------------------------------
-     EMPTY HISTORY
-  --------------------------------------------- */
+  /* =================================================
+     NO HISTORY
+  ================================================= */
 
-  if (pastRequests.length === 0) {
+  if (
+    pastRequests.length === 0
+  ) {
 
     historyGrid.innerHTML = `
+
       <div class="empty-history">
 
         No past outings yet.
 
       </div>
+
     `;
 
     return;
   }
 
 
-  /* ---------------------------------------------
-     CREATE CARDS
-  --------------------------------------------- */
+  /* =================================================
+     CREATE HISTORY CARDS
+  ================================================= */
 
   historyGrid.innerHTML =
     pastRequests
       .map(
         request =>
-          createBookingHTML(request)
+          createBookingHTML(
+            request
+          )
       )
       .join("");
 
 
-  /* ---------------------------------------------
+  /* =================================================
      TRIPLE CLICK DELETE
-     
-     Delete button stays hidden until
-     the individual card is triple-clicked.
-  --------------------------------------------- */
+  ================================================= */
 
   document
     .querySelectorAll(".booking")
@@ -634,15 +975,17 @@ function renderHistory() {
         "click",
         function(event) {
 
+
           /*
-             Don't count clicks on
-             Delete button itself.
+             Don't count clicks
+             on delete button.
           */
 
           if (
             event.target.classList
               .contains("remove-btn")
           ) {
+
             return;
           }
 
@@ -650,7 +993,9 @@ function renderHistory() {
           clickCount++;
 
 
-          clearTimeout(clickTimer);
+          clearTimeout(
+            clickTimer
+          );
 
 
           clickTimer =
@@ -664,15 +1009,18 @@ function renderHistory() {
             );
 
 
-          /* ----------------------------------
-             TRIPLE CLICK
-          ---------------------------------- */
+          /*
+             Triple click
+          */
 
-          if (clickCount === 3) {
+          if (
+            clickCount === 3
+          ) {
 
             this.classList.add(
               "delete-unlocked"
             );
+
 
             clickCount = 0;
           }
@@ -683,9 +1031,9 @@ function renderHistory() {
     });
 
 
-  /* ---------------------------------------------
+  /* =================================================
      DELETE BUTTONS
-  --------------------------------------------- */
+  ================================================= */
 
   document
     .querySelectorAll(".remove-btn")
@@ -695,10 +1043,17 @@ function renderHistory() {
         "click",
         function(event) {
 
+
+          /*
+             Don't trigger card click
+          */
+
           event.stopPropagation();
+
 
           const id =
             this.dataset.id;
+
 
           removeRequest(id);
 
@@ -710,10 +1065,12 @@ function renderHistory() {
 
 
 /* =====================================================
-   BOOKING HTML
+   CREATE PAST OUTING CARD
 ===================================================== */
 
-function createBookingHTML(request) {
+function createBookingHTML(
+  request
+) {
 
   const status =
     request.status ||
@@ -723,9 +1080,11 @@ function createBookingHTML(request) {
   /*
      IMPORTANT:
 
-     confirmedBy is deliberately NOT used here.
+     confirmedBy is intentionally NOT
+     displayed here.
 
-     It should NOT appear in Past Outings.
+     "Confirmed by: sarasu" appears
+     ONLY in the current OTP card.
   */
 
 
@@ -735,20 +1094,28 @@ function createBookingHTML(request) {
       class="booking"
     >
 
+
+      <!-- HEADER -->
+
       <div class="booking-top">
 
         <h3>
           Booking Details
         </h3>
 
+
         <span>
+
           ${escapeHTML(
             status.toUpperCase()
           )}
+
         </span>
 
       </div>
 
+
+      <!-- OUT DATE -->
 
       <p>
 
@@ -763,6 +1130,8 @@ function createBookingHTML(request) {
       </p>
 
 
+      <!-- OUT TIME -->
+
       <p>
 
         <b>
@@ -775,6 +1144,8 @@ function createBookingHTML(request) {
 
       </p>
 
+
+      <!-- IN DATE -->
 
       <p>
 
@@ -789,6 +1160,8 @@ function createBookingHTML(request) {
       </p>
 
 
+      <!-- IN TIME -->
+
       <p>
 
         <b>
@@ -802,6 +1175,8 @@ function createBookingHTML(request) {
       </p>
 
 
+      <!-- REASON -->
+
       <p>
 
         <b>
@@ -814,6 +1189,8 @@ function createBookingHTML(request) {
 
       </p>
 
+
+      <!-- STATUS -->
 
       <p>
 
@@ -829,12 +1206,13 @@ function createBookingHTML(request) {
 
 
       <!-- =========================================
-           HISTORY HANDLED INFORMATION
+           HANDLED INFORMATION
 
-           NO "Confirmed by: sarasu" HERE.
+           NO CONFIRMED BY HERE
       ========================================== -->
 
       <div class="handled">
+
 
         <b>
           Handled on:
@@ -844,7 +1222,9 @@ function createBookingHTML(request) {
           request.handledOn || ""
         )}
 
+
         <br />
+
 
         <b>
           Handled by:
@@ -855,14 +1235,14 @@ function createBookingHTML(request) {
           "warden.sannasic.ktr"
         )}
 
+
       </div>
 
 
       <!-- =========================================
-           HIDDEN DELETE BUTTON
-           
-           CSS makes this visible after
-           triple-clicking the card.
+           DELETE BUTTON
+
+           Hidden until triple-click
       ========================================== -->
 
       <button
@@ -876,6 +1256,7 @@ function createBookingHTML(request) {
         Delete Outing
 
       </button>
+
 
     </article>
 
@@ -892,65 +1273,81 @@ function submitRequest(event) {
   event.preventDefault();
 
 
-  /* ---------------------------------------------
+  /* =================================================
      GET FORM VALUES
-  --------------------------------------------- */
+  ================================================= */
 
   const room =
     document
-      .getElementById("roomNumber")
+      .getElementById(
+        "roomNumber"
+      )
       .value
       .trim();
 
 
   const outDate =
     document
-      .getElementById("outDate")
+      .getElementById(
+        "outDate"
+      )
       .value;
 
 
   const outTime =
     document
-      .getElementById("outTime")
+      .getElementById(
+        "outTime"
+      )
       .value;
 
 
   const inDate =
     document
-      .getElementById("inDate")
+      .getElementById(
+        "inDate"
+      )
       .value;
 
 
   const inTime =
     document
-      .getElementById("inTime")
+      .getElementById(
+        "inTime"
+      )
       .value;
 
 
   const reason =
     document
-      .getElementById("reason")
+      .getElementById(
+        "reason"
+      )
       .value
       .trim();
 
 
   const parentEmail =
     document
-      .getElementById("parentEmail")
+      .getElementById(
+        "parentEmail"
+      )
       .value
       .trim();
 
 
   const parentPhone =
     document
-      .getElementById("parentPhone")
+      .getElementById(
+        "parentPhone"
+      )
       .value
       .trim();
 
 
-  /* ---------------------------------------------
+  /* =================================================
      VALIDATION
-  --------------------------------------------- */
+  ================================================= */
 
   if (
     !room ||
@@ -969,9 +1366,9 @@ function submitRequest(event) {
   }
 
 
-  /* ---------------------------------------------
-     CHECK DATE/TIME
-  --------------------------------------------- */
+  /* =================================================
+     CHECK DATE / TIME
+  ================================================= */
 
   const outDateTime =
     new Date(
@@ -985,7 +1382,10 @@ function submitRequest(event) {
     );
 
 
-  if (inDateTime < outDateTime) {
+  if (
+    inDateTime <
+    outDateTime
+  ) {
 
     alert(
       "In Date/Time cannot be before Out Date/Time."
@@ -995,47 +1395,79 @@ function submitRequest(event) {
   }
 
 
-  /* ---------------------------------------------
-     CHECK IF OUT DATE IS TODAY
-  --------------------------------------------- */
+  /* =================================================
+     IS IT TODAY?
+  ================================================= */
 
   const isToday =
     outDate === getToday();
 
 
-  /* ---------------------------------------------
-     CREATE REQUEST
-  --------------------------------------------- */
+  /* =================================================
+     CREATE NEW REQUEST
+     
+     IMPORTANT:
+     OTP starts as NULL.
+
+     User must click
+     Generate OTP.
+  ================================================= */
 
   const newRequest = {
 
     id:
       Date.now().toString(),
 
-    room,
 
-    outDate,
-
-    outTime,
-
-    inDate,
-
-    inTime,
-
-    reason,
-
-    parentEmail,
-
-    parentPhone,
+    room:
 
 
-    /*
-       Today's request:
-       still_out
+      room,
 
-       Older request:
-       confirmed
-    */
+
+    outDate:
+
+
+      outDate,
+
+
+    outTime:
+
+
+      outTime,
+
+
+    inDate:
+
+
+      inDate,
+
+
+    inTime:
+
+
+      inTime,
+
+
+    reason:
+
+
+      reason,
+
+
+    parentEmail:
+
+
+      parentEmail,
+
+
+    parentPhone:
+
+
+      parentPhone,
+
+
+    /* Today's request */
 
     status:
       isToday
@@ -1044,10 +1476,7 @@ function submitRequest(event) {
 
 
     /*
-       This is kept in the data because
-       the OTP section uses it.
-
-       It is NOT displayed in history.
+       Stored for OTP section only.
     */
 
     confirmedBy:
@@ -1059,25 +1488,28 @@ function submitRequest(event) {
 
 
     handledBy:
-      "warden.sannasic.ktr",
+      isToday
+        ? "Sarasu supervisor"
+        : "warden.sannasic.ktr",
 
 
     /*
-       Generate OTP immediately
-       if outing is today.
+       IMPORTANT:
+
+       Do NOT generate OTP here.
+
+       It will be generated by
+       Generate OTP button.
     */
 
-    otp:
-      isToday
-        ? generateOTP()
-        : null
+    otp: null
 
   };
 
 
-  /* ---------------------------------------------
-     SAVE
-  --------------------------------------------- */
+  /* =================================================
+     SAVE REQUEST
+  ================================================= */
 
   const requests =
     getRequests();
@@ -1093,35 +1525,37 @@ function submitRequest(event) {
   );
 
 
-  /* ---------------------------------------------
+  /* =================================================
      RESET FORM
-  --------------------------------------------- */
+  ================================================= */
 
   const form =
     document.getElementById(
       "outingForm"
     );
 
+
   if (form) {
+
     form.reset();
   }
 
 
-  /* ---------------------------------------------
-     REFRESH
-  --------------------------------------------- */
+  /* =================================================
+     REFRESH PAGE
+  ================================================= */
 
   renderPage();
 
 
-  /* ---------------------------------------------
+  /* =================================================
      SUCCESS MESSAGE
-  --------------------------------------------- */
+  ================================================= */
 
   if (isToday) {
 
     alert(
-      "Outing request submitted successfully! Your Arch Gate OTP has been generated."
+      "Outing request submitted successfully. Click Generate OTP to generate your Arch Gate OTP."
     );
 
   } else if (
@@ -1137,9 +1571,7 @@ function submitRequest(event) {
     alert(
       "Outing request submitted successfully."
     );
-
   }
-
 }
 
 
@@ -1156,6 +1588,7 @@ function removeRequest(id) {
 
 
   if (!confirmed) {
+
     return;
   }
 
@@ -1189,7 +1622,6 @@ function toggleDarkMode() {
   document.body
     .classList
     .toggle("dark");
-
 }
 
 
@@ -1202,7 +1634,6 @@ function fakeLogout() {
   alert(
     "Demo only — logout is not connected to a real authentication system."
   );
-
 }
 
 
@@ -1212,7 +1643,9 @@ function fakeLogout() {
 
 function escapeHTML(value) {
 
-  return String(value)
+  return String(
+    value ?? ""
+  )
 
     .replace(
       /&/g,
@@ -1238,7 +1671,6 @@ function escapeHTML(value) {
       /'/g,
       "&#039;"
     );
-
 }
 
 
@@ -1258,7 +1690,6 @@ if (outingForm) {
     "submit",
     submitRequest
   );
-
 }
 
 
